@@ -1,15 +1,17 @@
-const gulp            = require('gulp');
-const babel           = require('gulp-babel');
-const plumber         = require('gulp-plumber');
-const uglify          = require('gulp-uglify');
-const sourcemaps      = require('gulp-sourcemaps');
-const concat          = require('gulp-concat');
-const sass            = require('gulp-sass');
-const cssmin          = require('gulp-csso');
-const autoprefixer    = require('gulp-autoprefixer');
-const order           = require('gulp-order');
-const browserSync     = require('browser-sync').create();
-
+const 
+  gulp            = require('gulp'),
+  babel           = require('gulp-babel'),
+  plumber         = require('gulp-plumber'),
+  uglify          = require('gulp-uglify'),
+  sourcemaps      = require('gulp-sourcemaps'),
+  concat          = require('gulp-concat'),
+  sass            = require('gulp-sass'),
+  cssmin          = require('gulp-csso'),
+  autoprefixer    = require('gulp-autoprefixer'),
+  order           = require('gulp-order'),
+  imagemin        = require('gulp-imagemin'),
+  browserSync     = require('browser-sync').create()
+;
 
 // CSS
 gulp.task('css', () => 
@@ -59,6 +61,13 @@ gulp.task('html', () =>
     }))
 );
 
+// Images
+gulp.task('images', () =>
+	gulp.src('src/images/**/*')
+		.pipe(imagemin())
+		.pipe(gulp.dest('build/images/'))
+);
+
 // Browser-Sync
 gulp.task('browserSync', () =>
   browserSync.init({
@@ -69,10 +78,11 @@ gulp.task('browserSync', () =>
 );
 
 // Watch
-gulp.task('watch', ['css', 'js', 'html', 'browserSync'], () => {
+gulp.task('watch', ['css', 'js', 'html', 'images', 'browserSync'], () => {
   gulp.watch('src/**/*.js', ['js']);
   gulp.watch('src/**/*.scss', ['css']);
   gulp.watch('src/html/**/*.html', ['html']);
+  gulp.watch('src/images/**/*', ['images']);
 });
 
 // Default Task
